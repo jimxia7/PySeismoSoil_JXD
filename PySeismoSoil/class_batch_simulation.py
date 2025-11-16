@@ -14,6 +14,7 @@ from PySeismoSoil.class_simulation import (
 from PySeismoSoil.class_simulation_results import Simulation_Results
 
 
+
 class Batch_Simulation:
     """
     Run site response simulations in batch.
@@ -93,10 +94,10 @@ class Batch_Simulation:
         if use_ctx:
             self.ctx = mp.get_context('forkserver')
             self.ctx.set_forkserver_preload([
-                'PySeismoSoil.class_Vs_profile',
-                'PySeismoSoil.class_ground_motion',
-                'PySeismoSoil.class_simulation',
-                'PySeismoSoil.class_batch_simulation',
+                '.class_Vs_profile',
+                '.class_ground_motion',
+                '.class_simulation',
+                '.class_batch_simulation',
             ])
 
     def run(
