@@ -26,6 +26,7 @@ from PySeismoSoil.class_simulation_results import Simulation_Results
 from PySeismoSoil.class_Vs_profile import Vs_Profile
 
 
+
 class Simulation:
     """
     Class implementation of a base site response simulation.
@@ -515,6 +516,8 @@ class Nonlinear_Simulation(Simulation):
             save_fig: bool = False,
             remove_sim_dir: bool = False,
             verbose: bool = True,
+            max_freq:float = 15,
+            wave_fraction: float=1/15,
     ) -> Simulation_Results:
         """
         Start nonlinear simulation.
@@ -611,7 +614,7 @@ class Nonlinear_Simulation(Simulation):
         )
 
         # --------- Re-discretize Vs profile -----------------------------------
-        new_profile = sr.stratify(self.soil_profile.vs_profile)
+        new_profile = sr.stratify(self.soil_profile.vs_profile,max_freq,wave_fraction)
         new_profile[:, 3] /= 1000.0  # convert to g/cm3 to pass to NLHH
 
         n_layer = new_profile.shape[0] - 1  # exclude bedrock
@@ -644,9 +647,8 @@ class Nonlinear_Simulation(Simulation):
         else:
             raise ValueError('Unknown operating system.')
 
-        import PySeismoSoil
+        package_path = importlib.resources.files(__package__)
 
-        package_path = importlib.resources.files(PySeismoSoil)
         dir_exec_files = str(package_path / 'exec_files')
         shutil.copy(
             os.path.join(dir_exec_files, 'NLHH.%s' % exec_ext), sim_dir
