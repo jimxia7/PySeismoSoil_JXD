@@ -712,3 +712,39 @@ class Vs_Profile:
             raise ValueError('Length of precision must be 5.')
 
         np.savetxt(fname, self.vs_profile, fmt=precision, delimiter=sep)
+
+
+    def to_dataframe(
+            self
+    ) ->  pd.DataFrame:
+        """
+        Write Vs profile to a dataframe.
+
+        Parameters
+        ----------
+        sep : str
+            Delimiter for the output file.
+        precision : tuple[str, str, str, str, str]
+            A list of precision specifiers, each for the five columns of the
+            Vs profile.
+
+        Raises
+        ------
+        TypeError
+            When ``precision`` is not a list
+        ValueError
+            When the length of ``precision`` is not 5
+        """
+
+
+        df = pd.DataFrame(self.vs_profile)
+
+        # Optional: add column names if known
+        if df.shape[1] == 2:
+            df.columns = ["thickness", "vs"]
+        elif df.shape[1] == 3:
+            df.columns = ["thickness", "vs", "rho"]
+        elif df.shape[1] == 5:
+            df.columns = ["thickness", "vs", "rho", "damping", "Material No."]
+
+        return df
