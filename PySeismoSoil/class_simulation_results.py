@@ -14,7 +14,6 @@ from PySeismoSoil.class_frequency_spectrum import Frequency_Spectrum
 from PySeismoSoil.class_ground_motion import Ground_Motion
 from PySeismoSoil.class_Vs_profile import Vs_Profile
 
-
 class Simulation_Results:
     """
     Site response simulation results: output ground motion, transfer function,
@@ -482,3 +481,21 @@ class Simulation_Results:
 
         if verbose:
             print('Simulation results saved to %s' % od)
+    
+    def to_pickle(self,pickle_file_name):
+
+        if not pickle:
+            raise RuntimeError("Install `pickle` library.")
+
+        pickle_file_path = Path(pickle_file_name)
+
+        if pickle_file_path.suffix.lower() != '.pkl':
+            raise ValueError("Output file must have a .pkl extension")
+        
+        with open(pickle_file_path, "wb") as f:
+            pickle.dump(self, f)
+
+        return
+
+
+        
