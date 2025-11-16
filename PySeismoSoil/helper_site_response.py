@@ -15,6 +15,8 @@ from PySeismoSoil import helper_generic as hlp
 from PySeismoSoil import helper_signal_processing as sig
 
 
+
+
 def calc_z1_from_Vs30(Vs30_in_meter_per_sec: np.ndarray) -> np.ndarray:
     """
     Calculate z1 (basin depth) from Vs30. The correlation used here is
@@ -28,7 +30,7 @@ def calc_z1_from_Vs30(Vs30_in_meter_per_sec: np.ndarray) -> np.ndarray:
     return z1_in_m
 
 
-def stratify(vs_profile: np.ndarray) -> np.ndarray:
+def stratify(vs_profile: np.ndarray,max_freq:float,wave_fraction:float) -> np.ndarray:
     """
     Divide layers of a Vs profile as necessary, according to the Vs values
     of each layer: if the layer thickness is more than Vs / 225.0, then divide
@@ -73,7 +75,7 @@ def stratify(vs_profile: np.ndarray) -> np.ndarray:
         flag = False
 
     n = len(h)
-    h_temp = Vs / 225.0  # max freq = 15 Hz, and 15 points per wavelength
+    h_temp = Vs / (max_freq*(1/wave_fraction))  # max freq = 15 Hz, and 15 points per wavelength
 
     h2 = []
     Vs2 = []
